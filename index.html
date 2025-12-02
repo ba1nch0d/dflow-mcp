@@ -254,6 +254,7 @@
             max-height: 400px;
             overflow-y: auto;
             display: none;
+            position: relative;
         }
 
         .response-content.active {
@@ -263,6 +264,127 @@
         .response-content.error {
             border-color: rgba(255, 100, 100, 0.3);
             background: rgba(255, 100, 100, 0.05);
+        }
+
+        .json-key {
+            color: #9cdcfe;
+        }
+
+        .json-string {
+            color: #ce9178;
+        }
+
+        .json-number {
+            color: #b5cea8;
+        }
+
+        .json-boolean {
+            color: #569cd6;
+        }
+
+        .json-null {
+            color: #569cd6;
+        }
+
+        .collapsible {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .collapsible::before {
+            content: '▼ ';
+            display: inline-block;
+            transition: transform 0.2s;
+        }
+
+        .collapsible.collapsed::before {
+            transform: rotate(-90deg);
+        }
+
+        .json-content.collapsed {
+            display: none;
+        }
+
+        .metadata-box {
+            background: rgba(100, 255, 100, 0.05);
+            border: 1px solid rgba(100, 255, 100, 0.2);
+            padding: 16px;
+            margin-bottom: 16px;
+            display: none;
+        }
+
+        .metadata-box.active {
+            display: block;
+        }
+
+        .metadata-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin-top: 12px;
+        }
+
+        .metadata-item {
+            text-align: center;
+        }
+
+        .metadata-value {
+            font-size: 18px;
+            font-weight: 600;
+            color: #00ff00;
+        }
+
+        .metadata-label {
+            font-size: 11px;
+            color: #888888;
+            margin-top: 4px;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            padding: 4px 12px;
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .chart-container {
+            margin-top: 24px;
+            display: none;
+        }
+
+        .chart-container.active {
+            display: block;
+        }
+
+        .chart-bar {
+            background: rgba(0, 255, 0, 0.2);
+            border-left: 3px solid #00ff00;
+            padding: 8px 12px;
+            margin: 8px 0;
+            position: relative;
+        }
+
+        .chart-label {
+            font-size: 12px;
+            color: #ffffff;
+        }
+
+        .chart-value {
+            font-size: 11px;
+            color: #00ff00;
+            position: absolute;
+            right: 12px;
+            top: 8px;
         }
 
         .call-btn {
@@ -479,8 +601,18 @@
             </div>
 
             <div class="response-section">
-                <h3>Response</h3>
+                <h3>Response Metadata</h3>
+                <div id="metadata" class="metadata-box"></div>
+            </div>
+
+            <div class="response-section">
+                <h3>Response Data</h3>
                 <div id="response" class="response-content"></div>
+            </div>
+
+            <div class="response-section">
+                <h3>Data Visualization</h3>
+                <div id="charts" class="chart-container"></div>
             </div>
         </div>
 
@@ -631,11 +763,10 @@
                 });
                 
                 const result = await response.text();
-                
+
                 if (response.ok) {
-                    responseDiv.textContent = JSON.stringify(JSON.parse(result), null, 2);
-                    responseDiv.classList.remove('error');
-                    responseDiv.classList.add('active');
+                    const data = JSON.parse(result);
+                    displayPrettifiedResponse(data);
                     setSuccess();
                 } else {
                     throw new Error(`HTTP ${response.status}: ${result}`);
@@ -685,6 +816,97 @@
                         alert(`Copied ${filename} to clipboard!`);
                     });
                 });
+        }
+
+        let lastResponseData = null;
+
+        function copyResponse() {
+            if (lastResponseData) {
+                navigator.clipboard.writeText(JSON.stringify(lastResponseData, null, 2)).then(() => {
+                    const btn = document.querySelector('.copy-btn');
+                    btn.textContent = '✅ Copied!';
+                    setTimeout(() => btn.textContent = '📋 Copy Response', 2000);
+                });
+            }
+        }
+
+        function displayPrettifiedResponse(data) {
+            lastResponseData = data;
+            const responseDiv = document.getElementById('response');
+            const metadataDiv = document.getElementById('metadata');
+            const chartsDiv = document.getElementById('charts');
+
+            // Add copy button
+            responseDiv.innerHTML = '<button class="copy-btn" onclick="copyResponse()">📋 Copy Response</button>' +
+                                   '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+            responseDiv.classList.remove('error');
+            responseDiv.classList.add('active');
+
+            // Extract and display metadata
+            if (data.result && data.result.content && data.result.content[0]) {
+                try {
+                    const content = JSON.parse(data.result.content[0].text);
+                    showMetadata(content, metadataDiv);
+                    showCharts(content, chartsDiv);
+                } catch (e) {
+                    console.log('Could not parse content for metadata');
+                }
+            }
+        }
+
+        function showMetadata(data, container) {
+            let html = '<h4 style="margin: 0 0 12px 0">📊 Response Summary</h4><div class="metadata-grid">';
+
+            if (data.events) {
+                const totalVolume = data.events.reduce((sum, e) => sum + (e.volume || 0), 0);
+                const avgVolume = Math.round(totalVolume / data.events.length);
+                html += `
+                    <div class="metadata-item">
+                        <div class="metadata-value">${data.events.length}</div>
+                        <div class="metadata-label">Events</div>
+                    </div>
+                    <div class="metadata-item">
+                        <div class="metadata-value">$${(totalVolume / 1000000).toFixed(1)}M</div>
+                        <div class="metadata-label">Total Volume</div>
+                    </div>
+                    <div class="metadata-item">
+                        <div class="metadata-value">$${(avgVolume / 1000).toFixed(0)}K</div>
+                        <div class="metadata-label">Avg Volume</div>
+                    </div>
+                `;
+            } else if (data.tools) {
+                html += `
+                    <div class="metadata-item">
+                        <div class="metadata-value">${data.tools.length}</div>
+                        <div class="metadata-label">Available Tools</div>
+                    </div>
+                `;
+            }
+
+            html += '</div>';
+            container.innerHTML = html;
+            container.classList.add('active');
+        }
+
+        function showCharts(data, container) {
+            if (!data.events || data.events.length === 0) return;
+
+            const top10 = data.events.slice(0, 10);
+            const maxVolume = Math.max(...top10.map(e => e.volume || 0));
+
+            let html = '<h4 style="margin: 0 0 12px 0">📈 Top Events by Volume</h4>';
+            top10.forEach(event => {
+                const width = (event.volume / maxVolume * 100);
+                html += `
+                    <div class="chart-bar" style="width: ${width}%">
+                        <div class="chart-label">${event.title.substring(0, 40)}...</div>
+                        <div class="chart-value">$${(event.volume / 1000000).toFixed(2)}M</div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+            container.classList.add('active');
         }
     </script>
 </body>
