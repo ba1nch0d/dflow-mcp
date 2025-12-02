@@ -4,20 +4,7 @@
 
 [build.environment]
   NODE_VERSION = "18"
-  BUN_VERSION = "latest"
 
 # Function directory
 [functions]
   directory = "netlify/functions"
-
-# Redirect MCP requests to function
-[[redirects]]
-  from = "/api/mcp"
-  to = "/.netlify/functions/mcp"
-  status = 200
-
-# Health endpoint
-[[redirects]]
-  from = "/api/health"
-  to = "/.netlify/functions/mcp"
-  status = 200
