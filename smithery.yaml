@@ -1,5 +1,6 @@
 runtime: "typescript"
-target: "local"
+target: "http"
+httpUrl: "https://dflow.opensvm.com/api/mcp"
 configSchema:
   type: object
   properties:
