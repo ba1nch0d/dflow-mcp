@@ -11,7 +11,16 @@
     "type": "git",
     "url": "https://github.com/openSVM/dflow-mcp.git"
   },
-  "keywords": ["mcp", "model-context-protocol", "prediction-markets", "dflow", "api", "trading", "analytics", "solana"],
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "prediction-markets",
+    "dflow",
+    "api",
+    "trading",
+    "analytics",
+    "solana"
+  ],
   "author": "openSVM",
   "license": "MIT",
   "scripts": {
@@ -32,6 +41,7 @@
     "@smithery/cli": "^1.4.6",
     "@types/node": "^20.0.0",
     "bun-types": "latest",
+    "playwright": "^1.57.0",
     "typescript": "^5.0.0"
   }
 }
