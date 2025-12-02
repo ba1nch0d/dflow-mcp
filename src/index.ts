@@ -12,6 +12,10 @@ import {
   CallToolRequestSchema,
   ErrorCode,
   ListToolsRequestSchema,
+  ListPromptsRequestSchema,
+  GetPromptRequestSchema,
+  ListResourcesRequestSchema,
+  ReadResourceRequestSchema,
   McpError,
   Tool,
 } from '@modelcontextprotocol/sdk/types.js';
@@ -84,22 +88,32 @@ class DFlowAPIClient {
   }
 }
 
-// Initialize server
-const server = new Server(
-  {
-    name: 'dflow-mcp-server',
-    version: '1.0.0',
-  },
-  {
-    capabilities: {
-      tools: {},
-      prompts: {},
-      resources: {},
-    },
-  }
-);
+// Configuration schema for Smithery
+interface ServerConfig {
+  apiUrl?: string;
+  requestTimeout?: number;
+}
 
-const apiClient = new DFlowAPIClient();
+// Factory function for Smithery compatibility
+function createServer(config?: ServerConfig) {
+  const apiClient = new DFlowAPIClient(
+    config?.apiUrl || BASE_URL,
+    config?.requestTimeout || DEFAULT_TIMEOUT
+  );
+
+  const server = new Server(
+    {
+      name: 'dflow-mcp-server',
+      version: '1.0.0',
+    },
+    {
+      capabilities: {
+        tools: {},
+        prompts: {},
+        resources: {},
+      },
+    }
+  );
 
 // Tool definitions
 const TOOLS: Tool[] = [
@@ -887,7 +901,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
 });
 
 // Handle list prompts request
-server.setRequestHandler({ method: 'prompts/list' } as any, async () => {
+server.setRequestHandler(ListPromptsRequestSchema, async () => {
   return {
     prompts: [
       {
@@ -922,7 +936,7 @@ server.setRequestHandler({ method: 'prompts/list' } as any, async () => {
 });
 
 // Handle get prompt request
-server.setRequestHandler({ method: 'prompts/get' } as any, async (request: any) => {
+server.setRequestHandler(GetPromptRequestSchema, async (request) => {
   const { name, arguments: args } = request.params;
 
   if (name === 'analyze_market_trends') {
@@ -960,7 +974,7 @@ server.setRequestHandler({ method: 'prompts/get' } as any, async (request: any) 
 });
 
 // Handle list resources request
-server.setRequestHandler({ method: 'resources/list' } as any, async () => {
+server.setRequestHandler(ListResourcesRequestSchema, async () => {
   return {
     resources: [
       {
@@ -986,7 +1000,7 @@ server.setRequestHandler({ method: 'resources/list' } as any, async () => {
 });
 
 // Handle read resource request
-server.setRequestHandler({ method: 'resources/read' } as any, async (request: any) => {
+server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
   const { uri } = request.params;
 
   if (uri === 'dflow://api/events') {
@@ -1192,9 +1206,18 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
   }
 });
 
-// Start the server
+  return server;
+}
+
+// Export for Smithery (stateless server factory)
+export default function({ config }: { config?: ServerConfig }) {
+  return createServer(config);
+}
+
+// Also run as STDIO server when executed directly
 async function main() {
   const transport = new StdioServerTransport();
+  const server = createServer();
   await server.connect(transport);
 }
 
@@ -1207,8 +1230,11 @@ process.on('SIGTERM', () => {
   process.exit(0);
 });
 
-// Start the server
-main().catch((error) => {
-  console.error('Server error:', error);
-  process.exit(1);
-});
+// Start the server if run directly (not imported)
+const isMainModule = typeof require !== 'undefined' && require.main === module;
+if (isMainModule || process.argv[1]?.endsWith('index.ts')) {
+  main().catch((error) => {
+    console.error('Server error:', error);
+    process.exit(1);
+  });
+}
