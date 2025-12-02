@@ -463,20 +463,40 @@ function generateCandlestickChart(candleData, width = 80, height = 25) {
   return chart;
 }
 
+// CORS headers for MCP Streamable HTTP
+const CORS_HEADERS = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Credentials': 'true',
+  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization, mcp-session-id, mcp-protocol-version, *',
+  'Access-Control-Expose-Headers': 'mcp-session-id, mcp-protocol-version',
+};
+
 // Main request handler
 exports.handler = async function(event, context) {
   const { httpMethod, body, headers } = event;
 
-  // Handle CORS
+  // Handle CORS preflight
   if (httpMethod === 'OPTIONS') {
     return {
       statusCode: 200,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Headers': 'Content-Type',
-        'Access-Control-Allow-Methods': 'POST, OPTIONS',
-      },
+      headers: CORS_HEADERS,
       body: '',
+    };
+  }
+
+  // Handle GET for health check and discovery
+  if (httpMethod === 'GET') {
+    return {
+      statusCode: 200,
+      headers: { 'Content-Type': 'application/json', ...CORS_HEADERS },
+      body: JSON.stringify({
+        name: "dflow-mcp-server",
+        version: "1.0.0",
+        description: "Access real-time and historical prediction market data from DFlow/Kalshi",
+        capabilities: { tools: true },
+        tools_count: TOOLS.length
+      })
     };
   }
 
@@ -484,7 +504,7 @@ exports.handler = async function(event, context) {
   if (httpMethod !== 'POST') {
     return {
       statusCode: 405,
-      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+      headers: { 'Content-Type': 'application/json', ...CORS_HEADERS },
       body: JSON.stringify({ error: 'Method not allowed' })
     };
   }
@@ -496,18 +516,19 @@ exports.handler = async function(event, context) {
     if (request.method === 'initialize') {
       return {
         statusCode: 200,
-        headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+        headers: { 'Content-Type': 'application/json', ...CORS_HEADERS },
         body: JSON.stringify({
           jsonrpc: "2.0",
           id: request.id,
           result: {
             protocolVersion: "2024-11-05",
             capabilities: {
-              tools: {},
+              tools: { listChanged: false },
             },
             serverInfo: {
               name: "dflow-mcp-server",
-              version: "1.0.0"
+              version: "1.0.0",
+              description: "Access real-time and historical prediction market data from DFlow/Kalshi APIs"
             }
           }
         })
@@ -518,7 +539,7 @@ exports.handler = async function(event, context) {
     if (request.method === 'notifications/initialized') {
       return {
         statusCode: 200,
-        headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+        headers: { 'Content-Type': 'application/json', ...CORS_HEADERS },
         body: JSON.stringify({
           jsonrpc: "2.0",
           result: {}
@@ -526,11 +547,11 @@ exports.handler = async function(event, context) {
       };
     }
 
-    // Handle tools.list
+    // Handle tools.list / tools/list
     if (request.method === 'tools.list' || request.method === 'tools/list') {
       return {
         statusCode: 200,
-        headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+        headers: { 'Content-Type': 'application/json', ...CORS_HEADERS },
         body: JSON.stringify({
           jsonrpc: "2.0",
           id: request.id,
@@ -671,7 +692,7 @@ exports.handler = async function(event, context) {
 
         return {
           statusCode: 200,
-          headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+          headers: { 'Content-Type': 'application/json', ...CORS_HEADERS },
           body: JSON.stringify({
             jsonrpc: "2.0",
             id: request.id,
@@ -688,7 +709,7 @@ exports.handler = async function(event, context) {
       } catch (error) {
         return {
           statusCode: 200,
-          headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+          headers: { 'Content-Type': 'application/json', ...CORS_HEADERS },
           body: JSON.stringify({
             jsonrpc: "2.0",
             id: request.id,
@@ -704,7 +725,7 @@ exports.handler = async function(event, context) {
     // Method not found
     return {
       statusCode: 200,
-      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+      headers: { 'Content-Type': 'application/json', ...CORS_HEADERS },
       body: JSON.stringify({
         jsonrpc: "2.0",
         id: request.id,
@@ -715,7 +736,7 @@ exports.handler = async function(event, context) {
   } catch (error) {
     return {
       statusCode: 400,
-      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+      headers: { 'Content-Type': 'application/json', ...CORS_HEADERS },
       body: JSON.stringify({
         jsonrpc: "2.0",
         id: null,

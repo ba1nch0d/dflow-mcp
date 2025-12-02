@@ -70,38 +70,90 @@
         }
 
         .btn-primary {
-            background: #ffffff;
+            background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
             color: #000000;
             border: none;
-            padding: 12px 24px;
-            font-size: 14px;
-            font-weight: 500;
+            padding: 14px 32px;
+            font-size: 15px;
+            font-weight: 600;
             text-decoration: none;
             display: inline-block;
-            transition: all 0.2s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 2px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(4, 63, 198, 0.1) 100%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .btn-primary:hover::before {
+            opacity: 1;
         }
 
         .btn-primary:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 8px rgba(255, 255, 255, 0.2);
         }
 
         .btn-secondary {
             background: transparent;
             color: #ffffff;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 12px 24px;
-            font-size: 14px;
+            border: 1.5px solid rgba(255, 255, 255, 0.25);
+            padding: 13px 30px;
+            font-size: 15px;
             font-weight: 500;
             text-decoration: none;
             display: inline-block;
-            transition: all 0.2s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
+            border-radius: 2px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-secondary::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            transform: translate(-50%, -50%);
+            transition: width 0.5s, height 0.5s;
+        }
+
+        .btn-secondary:hover::after {
+            width: 300px;
+            height: 300px;
         }
 
         .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-secondary:active {
+            transform: translateY(0);
         }
 
         .container {
@@ -388,17 +440,42 @@
 
         .install-tab {
             background: transparent;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1.5px solid rgba(255, 255, 255, 0.2);
             color: #888888;
-            padding: 10px 24px;
+            padding: 12px 28px;
             font-size: 14px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 4px;
+            font-weight: 500;
+            position: relative;
+        }
+
+        .install-tab::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: #10B981;
+            transform: translateX(-50%);
+            transition: width 0.3s;
         }
 
         .install-tab.active {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.4);
+            background: rgba(16, 185, 129, 0.08);
+            border-color: rgba(16, 185, 129, 0.4);
+            color: #10B981;
+        }
+
+        .install-tab.active::after {
+            width: 60%;
+        }
+
+        .install-tab:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.3);
             color: #ffffff;
         }
 
@@ -498,20 +575,44 @@
         }
 
         .tools-browse-btn {
-            background: rgba(16, 185, 129, 0.1);
-            border: 1px solid rgba(16, 185, 129, 0.3);
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%);
+            border: 1.5px solid rgba(16, 185, 129, 0.3);
             color: #10B981;
-            padding: 12px 24px;
-            font-size: 14px;
+            padding: 14px 32px;
+            font-size: 15px;
             cursor: pointer;
-            transition: all 0.2s;
-            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 600;
             margin-bottom: 24px;
+            border-radius: 4px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tools-browse-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .tools-browse-btn:hover::before {
+            left: 100%;
         }
 
         .tools-browse-btn:hover {
-            background: rgba(16, 185, 129, 0.2);
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(16, 185, 129, 0.1) 100%);
             border-color: rgba(16, 185, 129, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(16, 185, 129, 0.3);
+        }
+
+        .tools-browse-btn:active {
+            transform: scale(0.98);
         }
 
         .tools-grid {
@@ -620,25 +721,35 @@
         }
 
         .tool-btn {
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
             color: #888888;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 8px 16px;
-            border-radius: 0;
+            border: 1.5px solid rgba(255, 255, 255, 0.15);
+            padding: 10px 20px;
+            border-radius: 4px;
             font-size: 14px;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 500;
+            position: relative;
         }
 
         .tool-btn.active {
-            background: rgba(255, 255, 255, 0.2);
-            color: #ffffff;
-            border-color: rgba(255, 255, 255, 0.4);
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(16, 185, 129, 0.08) 100%);
+            color: #10B981;
+            border-color: rgba(16, 185, 129, 0.5);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
         }
 
         .tool-btn:hover {
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.12);
             color: #ffffff;
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
+        }
+
+        .tool-btn:active {
+            transform: scale(0.98);
         }
 
         .tool-params {
@@ -671,17 +782,24 @@
 
         .param-item input {
             background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1.5px solid rgba(255, 255, 255, 0.2);
             color: #ffffff;
-            padding: 10px 12px;
+            padding: 12px 14px;
             font-size: 14px;
-            border-radius: 0;
+            border-radius: 4px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .param-item input:focus {
             outline: none;
-            border-color: rgba(255, 255, 255, 0.4);
+            border-color: rgba(16, 185, 129, 0.5);
             background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+
+        .param-item input:hover:not(:focus) {
+            border-color: rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.07);
         }
 
         .response-section {
@@ -696,17 +814,20 @@
         }
 
         .response-content {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1.5px solid rgba(255, 255, 255, 0.15);
+            padding: 20px;
             font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
             font-size: 12px;
             color: #ffffff;
             white-space: pre-wrap;
-            max-height: 400px;
+            max-height: 450px;
             overflow-y: auto;
             display: none;
             position: relative;
+            border-radius: 6px;
+            animation: fadeIn 0.4s ease-out;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         .response-content.active {
@@ -714,8 +835,27 @@
         }
 
         .response-content.error {
-            border-color: rgba(255, 100, 100, 0.3);
-            background: rgba(255, 100, 100, 0.05);
+            border-color: rgba(255, 100, 100, 0.4);
+            background: linear-gradient(135deg, rgba(255, 100, 100, 0.08) 0%, rgba(255, 100, 100, 0.03) 100%);
+        }
+
+        .response-content::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .response-content::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+        }
+
+        .response-content::-webkit-scrollbar-thumb {
+            background: rgba(16, 185, 129, 0.3);
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+
+        .response-content::-webkit-scrollbar-thumb:hover {
+            background: rgba(16, 185, 129, 0.5);
         }
 
         .json-key {
@@ -758,15 +898,29 @@
         }
 
         .metadata-box {
-            background: rgba(16, 185, 129, 0.05);
-            border: 1px solid rgba(16, 185, 129, 0.2);
-            padding: 16px;
-            margin-bottom: 16px;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(16, 185, 129, 0.03) 100%);
+            border: 1.5px solid rgba(16, 185, 129, 0.25);
+            padding: 20px;
+            margin-bottom: 20px;
             display: none;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.1);
+            animation: fadeIn 0.4s ease-out;
         }
 
         .metadata-box.active {
             display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .metadata-grid {
@@ -794,19 +948,31 @@
 
         .copy-btn {
             position: absolute;
-            top: 8px;
-            right: 8px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #ffffff;
-            padding: 4px 12px;
-            font-size: 11px;
+            top: 12px;
+            right: 12px;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1.5px solid rgba(16, 185, 129, 0.3);
+            color: #10B981;
+            padding: 6px 14px;
+            font-size: 12px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 3px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .copy-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(16, 185, 129, 0.2);
+            border-color: rgba(16, 185, 129, 0.5);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(16, 185, 129, 0.2);
+        }
+
+        .copy-btn:active {
+            transform: scale(0.95);
         }
 
         .chart-container {
@@ -819,48 +985,108 @@
         }
 
         .chart-bar {
-            background: rgba(16, 185, 129, 0.2);
-            border-left: 3px solid #10B981;
-            padding: 8px 12px;
-            margin: 8px 0;
+            background: linear-gradient(90deg, rgba(16, 185, 129, 0.25) 0%, rgba(16, 185, 129, 0.05) 100%);
+            border-left: 4px solid #10B981;
+            padding: 12px 16px;
+            margin: 10px 0;
             position: relative;
+            border-radius: 0 4px 4px 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .chart-bar:hover {
+            background: linear-gradient(90deg, rgba(16, 185, 129, 0.35) 0%, rgba(16, 185, 129, 0.1) 100%);
+            transform: translateX(4px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
 
         .chart-label {
-            font-size: 12px;
+            font-size: 13px;
             color: #ffffff;
+            font-weight: 500;
+            padding-right: 80px;
+            line-height: 1.4;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .chart-value {
-            font-size: 11px;
+            font-size: 13px;
             color: #10B981;
             position: absolute;
-            right: 12px;
-            top: 8px;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-weight: 700;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 4px 10px;
+            border-radius: 4px;
+            backdrop-filter: blur(4px);
         }
 
         .call-btn {
-            background: #ffffff;
-            color: #000000;
+            background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+            color: #ffffff;
             border: none;
-            padding: 12px 32px;
+            padding: 14px 40px;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s ease;
-            border-radius: 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .call-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .call-btn:hover::before {
+            left: 100%;
         }
 
         .call-btn:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+        }
+
+        .call-btn:active {
+            transform: scale(0.98);
         }
 
         .call-btn:disabled {
-            background: #444444;
+            background: linear-gradient(135deg, #444444 0%, #333333 100%);
             color: #888888;
             cursor: not-allowed;
             transform: none;
+            box-shadow: none;
+        }
+
+        .call-btn:disabled::before {
+            display: none;
         }
 
         .status-indicator {
@@ -1706,53 +1932,122 @@ bun run dev
             container.classList.add('active');
         }
 
+        function formatValue(value, type = 'currency') {
+            if (value === null || value === undefined || isNaN(value)) {
+                return 'N/A';
+            }
+
+            if (type === 'currency') {
+                if (value >= 1000000) {
+                    return `$${(value / 1000000).toFixed(2)}M`;
+                } else if (value >= 1000) {
+                    return `$${(value / 1000).toFixed(1)}K`;
+                } else {
+                    return `$${value.toFixed(2)}`;
+                }
+            }
+
+            return value.toString();
+        }
+
         function showCharts(data, container) {
             let html = '';
             const maxCharts = 5;
 
             if (data.events && data.events.length > 0) {
-                const topN = data.events.slice(0, maxCharts);
-                const maxVolume = Math.max(...topN.map(e => e.volume || 0));
+                // Filter events with valid volume and sort by volume
+                const validEvents = data.events
+                    .filter(e => e.volume !== null && e.volume !== undefined && e.volume > 0)
+                    .sort((a, b) => (b.volume || 0) - (a.volume || 0))
+                    .slice(0, maxCharts);
 
-                html = `<h4 style="margin: 0 0 12px 0">Top ${topN.length} Events by Volume</h4>`;
-                topN.forEach(event => {
-                    const width = Math.max((event.volume / maxVolume * 100), 10);
-                    const title = (event.title || 'Event').substring(0, 35);
+                if (validEvents.length === 0) {
+                    return; // No valid data to chart
+                }
+
+                const maxVolume = Math.max(...validEvents.map(e => e.volume));
+
+                html = `<h4 style="margin: 0 0 16px 0; font-weight: 600; color: #10B981;">📊 Top ${validEvents.length} Events by Volume</h4>`;
+                validEvents.forEach((event, index) => {
+                    const volume = event.volume || 0;
+                    const width = Math.max((volume / maxVolume * 100), 15);
+                    const title = (event.title || event.ticker || 'Event').substring(0, 50);
+                    const formattedValue = formatValue(volume);
+
                     html += `
-                        <div class="chart-bar" style="width: ${width}%">
-                            <div class="chart-label">${title}</div>
-                            <div class="chart-value">$${(event.volume / 1000000).toFixed(2)}M</div>
+                        <div class="chart-bar" style="width: ${width}%; animation-delay: ${index * 0.1}s">
+                            <div class="chart-label" title="${event.title || event.ticker}">${title}${title.length >= 50 ? '...' : ''}</div>
+                            <div class="chart-value">${formattedValue}</div>
                         </div>
                     `;
                 });
             } else if (data.markets && data.markets.length > 0) {
-                const topN = data.markets.slice(0, maxCharts);
-                const maxLiq = Math.max(...topN.map(m => m.liquidity || 0));
+                // Filter markets with valid liquidity or volume and sort
+                const validMarkets = data.markets
+                    .filter(m => {
+                        const liq = m.liquidity || 0;
+                        const vol = m.volume || 0;
+                        return (liq > 0 || vol > 0);
+                    })
+                    .sort((a, b) => {
+                        const aVal = Math.max(a.liquidity || 0, a.volume || 0);
+                        const bVal = Math.max(b.liquidity || 0, b.volume || 0);
+                        return bVal - aVal;
+                    })
+                    .slice(0, maxCharts);
 
-                html = `<h4 style="margin: 0 0 12px 0">Top ${topN.length} Markets by Liquidity</h4>`;
-                topN.forEach(market => {
-                    const width = Math.max((market.liquidity / maxLiq * 100), 10);
-                    const title = (market.title || market.ticker || 'Market').substring(0, 35);
+                if (validMarkets.length === 0) {
+                    return; // No valid data to chart
+                }
+
+                const maxVal = Math.max(...validMarkets.map(m => Math.max(m.liquidity || 0, m.volume || 0)));
+                const useVolume = validMarkets.every(m => (m.volume || 0) > (m.liquidity || 0));
+
+                html = `<h4 style="margin: 0 0 16px 0; font-weight: 600; color: #10B981;">📊 Top ${validMarkets.length} Markets by ${useVolume ? 'Volume' : 'Liquidity'}</h4>`;
+                validMarkets.forEach((market, index) => {
+                    const value = useVolume ? (market.volume || 0) : (market.liquidity || 0);
+                    const width = Math.max((value / maxVal * 100), 15);
+                    const title = (market.title || market.ticker || 'Market').substring(0, 50);
+                    const formattedValue = formatValue(value);
+
                     html += `
-                        <div class="chart-bar" style="width: ${width}%">
-                            <div class="chart-label">${title}</div>
-                            <div class="chart-value">$${(market.liquidity / 1000000).toFixed(2)}M</div>
+                        <div class="chart-bar" style="width: ${width}%; animation-delay: ${index * 0.1}s">
+                            <div class="chart-label" title="${market.title || market.ticker}">${title}${title.length >= 50 ? '...' : ''}</div>
+                            <div class="chart-value">${formattedValue}</div>
                         </div>
                     `;
                 });
             } else if (data.trades && data.trades.length > 0) {
-                const topN = data.trades.slice(0, maxCharts);
-                const maxSize = Math.max(...topN.map(t => parseFloat(t.amount || t.size || 0)));
+                // Filter trades with valid size and sort
+                const validTrades = data.trades
+                    .filter(t => {
+                        const size = parseFloat(t.amount || t.size || 0);
+                        return size > 0 && !isNaN(size);
+                    })
+                    .sort((a, b) => {
+                        const aSize = parseFloat(a.amount || a.size || 0);
+                        const bSize = parseFloat(b.amount || b.size || 0);
+                        return bSize - aSize;
+                    })
+                    .slice(0, maxCharts);
 
-                html = `<h4 style="margin: 0 0 12px 0">Top ${topN.length} Trades by Size</h4>`;
-                topN.forEach(trade => {
+                if (validTrades.length === 0) {
+                    return; // No valid data to chart
+                }
+
+                const maxSize = Math.max(...validTrades.map(t => parseFloat(t.amount || t.size || 0)));
+
+                html = `<h4 style="margin: 0 0 16px 0; font-weight: 600; color: #10B981;">📊 Top ${validTrades.length} Trades by Size</h4>`;
+                validTrades.forEach((trade, index) => {
                     const size = parseFloat(trade.amount || trade.size || 0);
-                    const width = Math.max((size / maxSize * 100), 10);
-                    const title = (trade.ticker || trade.market || 'Trade').substring(0, 35);
+                    const width = Math.max((size / maxSize * 100), 15);
+                    const title = (trade.ticker || trade.market || trade.market_ticker || 'Trade').substring(0, 50);
+                    const formattedValue = formatValue(size);
+
                     html += `
-                        <div class="chart-bar" style="width: ${width}%">
-                            <div class="chart-label">${title}</div>
-                            <div class="chart-value">$${size.toFixed(2)}</div>
+                        <div class="chart-bar" style="width: ${width}%; animation-delay: ${index * 0.1}s">
+                            <div class="chart-label" title="${title}">${title}${title.length >= 50 ? '...' : ''}</div>
+                            <div class="chart-value">${formattedValue}</div>
                         </div>
                     `;
                 });
