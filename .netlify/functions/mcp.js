@@ -87,6 +87,7 @@ exports.handler = async function(event, context) {
 
   try {
     const request = JSON.parse(body);
+  console.log("🔍 DEBUG: Method received:", request.method);
 
     // Add CORS headers to all responses
     const responseHeaders = {
@@ -97,7 +98,7 @@ exports.handler = async function(event, context) {
     };
 
     // Handle initialize method
-    if (request.method === 'initialize') {
+    if (request.method === 'initialize' || request.method?.toString() === 'initialize') {
       const response = {
         jsonrpc: "2.0",
         id: request.id,
