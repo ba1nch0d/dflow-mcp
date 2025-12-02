@@ -424,7 +424,7 @@ exports.handler = async function(event, context) {
           examples: {
             initialize: {
               method: "initialize",
-              params: { protocolVersion: "2025-06-18", capabilities: {}, clientInfo: {...} },
+              params: { protocolVersion: "2025-06-18", capabilities: {}, clientInfo: { name: "...", version: "..." } },
               jsonrpc: "2.0",
               id: 0
             },
