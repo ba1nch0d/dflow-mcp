@@ -1109,12 +1109,8 @@ bun run dev
             }, 2000);
         }
 
-        // Auto-list tools on page load
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                callAPI();
-            }, 1000);
-        });
+        // Removed auto-load to improve page performance
+        // Users can manually click "Call API" when ready
 
         function copyFile(filename) {
             const content = fetch(filename)
@@ -1144,14 +1140,25 @@ bun run dev
             const metadataDiv = document.getElementById('metadata');
             const chartsDiv = document.getElementById('charts');
 
-            // Add copy button
+            // Optimize JSON rendering - truncate if too large
+            const jsonString = JSON.stringify(data, null, 2);
+            const maxLength = 50000; // 50KB limit for display
+            let displayJson = jsonString;
+            let truncated = false;
+
+            if (jsonString.length > maxLength) {
+                displayJson = jsonString.substring(0, maxLength) + '\n\n... (response truncated for performance, use Copy button to get full response)';
+                truncated = true;
+            }
+
+            // Add copy button and render JSON
             responseDiv.innerHTML = '<button class="copy-btn" onclick="copyResponse()">📋 Copy Response</button>' +
-                                   '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+                                   '<pre>' + displayJson + '</pre>';
             responseDiv.classList.remove('error');
             responseDiv.classList.add('active');
 
-            // Extract and display metadata
-            if (data.result && data.result.content && data.result.content[0]) {
+            // Extract and display metadata (only if not too large)
+            if (!truncated && data.result && data.result.content && data.result.content[0]) {
                 try {
                     const content = JSON.parse(data.result.content[0].text);
                     showMetadata(content, metadataDiv);
@@ -1232,46 +1239,50 @@ bun run dev
 
         function showCharts(data, container) {
             let html = '';
+            const maxCharts = 5; // Reduced from 10 for better performance
 
             if (data.events && data.events.length > 0) {
-                const top10 = data.events.slice(0, 10);
-                const maxVolume = Math.max(...top10.map(e => e.volume || 0));
+                const topN = data.events.slice(0, maxCharts);
+                const maxVolume = Math.max(...topN.map(e => e.volume || 0));
 
-                html = '<h4 style="margin: 0 0 12px 0">📈 Top Events by Volume</h4>';
-                top10.forEach(event => {
-                    const width = (event.volume / maxVolume * 100);
+                html = `<h4 style="margin: 0 0 12px 0">📈 Top ${topN.length} Events by Volume</h4>`;
+                topN.forEach(event => {
+                    const width = Math.max((event.volume / maxVolume * 100), 10); // Min 10% width
+                    const title = (event.title || 'Event').substring(0, 35);
                     html += `
                         <div class="chart-bar" style="width: ${width}%">
-                            <div class="chart-label">${event.title.substring(0, 40)}...</div>
+                            <div class="chart-label">${title}</div>
                             <div class="chart-value">$${(event.volume / 1000000).toFixed(2)}M</div>
                         </div>
                     `;
                 });
             } else if (data.markets && data.markets.length > 0) {
-                const top10 = data.markets.slice(0, 10);
-                const maxLiq = Math.max(...top10.map(m => m.liquidity || 0));
+                const topN = data.markets.slice(0, maxCharts);
+                const maxLiq = Math.max(...topN.map(m => m.liquidity || 0));
 
-                html = '<h4 style="margin: 0 0 12px 0">📈 Top Markets by Liquidity</h4>';
-                top10.forEach(market => {
-                    const width = (market.liquidity / maxLiq * 100);
+                html = `<h4 style="margin: 0 0 12px 0">📈 Top ${topN.length} Markets by Liquidity</h4>`;
+                topN.forEach(market => {
+                    const width = Math.max((market.liquidity / maxLiq * 100), 10);
+                    const title = (market.title || market.ticker || 'Market').substring(0, 35);
                     html += `
                         <div class="chart-bar" style="width: ${width}%">
-                            <div class="chart-label">${(market.title || market.ticker || 'Market').substring(0, 40)}</div>
+                            <div class="chart-label">${title}</div>
                             <div class="chart-value">$${(market.liquidity / 1000000).toFixed(2)}M</div>
                         </div>
                     `;
                 });
             } else if (data.trades && data.trades.length > 0) {
-                const top10 = data.trades.slice(0, 10);
-                const maxSize = Math.max(...top10.map(t => parseFloat(t.amount || t.size || 0)));
+                const topN = data.trades.slice(0, maxCharts);
+                const maxSize = Math.max(...topN.map(t => parseFloat(t.amount || t.size || 0)));
 
-                html = '<h4 style="margin: 0 0 12px 0">📈 Top Trades by Size</h4>';
-                top10.forEach(trade => {
+                html = `<h4 style="margin: 0 0 12px 0">📈 Top ${topN.length} Trades by Size</h4>`;
+                topN.forEach(trade => {
                     const size = parseFloat(trade.amount || trade.size || 0);
-                    const width = (size / maxSize * 100);
+                    const width = Math.max((size / maxSize * 100), 10);
+                    const title = (trade.ticker || trade.market || 'Trade').substring(0, 35);
                     html += `
                         <div class="chart-bar" style="width: ${width}%">
-                            <div class="chart-label">${trade.ticker || trade.market || 'Trade'}</div>
+                            <div class="chart-label">${title}</div>
                             <div class="chart-value">$${size.toFixed(2)}</div>
                         </div>
                     `;
