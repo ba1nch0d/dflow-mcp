@@ -1,9 +1,10 @@
-```markdown
 # DFlow MCP Server
 
 [![smithery badge](https://smithery.ai/badge/@openSVM/dflow-mcp)](https://smithery.ai/server/@openSVM/dflow-mcp)
 
-A Model Context Protocol (MCP) server for the Prediction Market Metadata API defined in `llms_dflow.json`.
+Access [Kalshi](https://kalshi.com) prediction market data - the first CFTC-regulated exchange for trading on real-world events. Built by [OpenSVM](https://osvm.ai). 23 tools for events, markets, trades, forecasts, candlesticks and live data.
+
+**Demo:** [https://dflow.opensvm.com](https://dflow.opensvm.com)
 
 ## Features
 
@@ -224,5 +225,8 @@ npx @smithery/cli install dflow-mcp-server --client claude
 
 ## License
 
-See LICENSE file for details.
-```
+MIT License - See LICENSE file for details.
+
+---
+
+**OpenSVM × Kalshi × DFlow**
