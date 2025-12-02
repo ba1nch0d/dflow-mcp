@@ -86,6 +86,24 @@
             box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
         }
 
+        .btn-secondary {
+            background: transparent;
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 12px 24px;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
         .container {
             max-width: 1000px;
             margin: 0 auto;
@@ -128,44 +146,190 @@
             margin-top: 4px;
         }
 
-        .resources {
+        .playground {
             margin: 64px 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.02);
+            padding: 32px;
+        }
+
+        .playground h2 {
+            font-size: 24px;
+            font-weight: 600;
+            margin: 0 0 24px 0;
             text-align: center;
         }
 
-        .resources h3 {
-            font-size: 18px;
-            font-weight: 600;
-            margin: 0 0 24px 0;
-        }
-
-        .resource-links {
+        .tool-selector {
             display: flex;
-            justify-content: center;
-            gap: 16px;
+            gap: 8px;
+            margin-bottom: 24px;
             flex-wrap: wrap;
         }
 
-        .resource-link {
-            color: #ffffff;
-            text-decoration: none;
-            padding: 10px 20px;
+        .tool-btn {
+            background: rgba(255, 255, 255, 0.1);
+            color: #888888;
             border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: 0;
             font-size: 14px;
+            cursor: pointer;
             transition: all 0.2s ease;
         }
 
-        .resource-link:hover {
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.3);
+        .tool-btn.active {
+            background: rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            border-color: rgba(255, 255, 255, 0.4);
         }
 
-        .footer {
-            text-align: center;
-            padding: 48px 0;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        .tool-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+        }
+
+        .tool-params {
+            display: none;
+            margin-bottom: 24px;
+        }
+
+        .tool-params.active {
+            display: block;
+        }
+
+        .param-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .param-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .param-item label {
             color: #888888;
             font-size: 14px;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .param-item input {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            padding: 10px 12px;
+            font-size: 14px;
+            border-radius: 0;
+        }
+
+        .param-item input:focus {
+            outline: none;
+            border-color: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .response-section {
+            margin-top: 24px;
+        }
+
+        .response-section h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin: 0 0 12px 0;
+            color: #ffffff;
+        }
+
+        .response-content {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 16px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 12px;
+            color: #ffffff;
+            white-space: pre-wrap;
+            max-height: 400px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .response-content.active {
+            display: block;
+        }
+
+        .response-content.error {
+            border-color: rgba(255, 100, 100, 0.3);
+            background: rgba(255, 100, 100, 0.05);
+        }
+
+        .call-btn {
+            background: #ffffff;
+            color: #000000;
+            border: none;
+            padding: 12px 32px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-radius: 0;
+        }
+
+        .call-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+        }
+
+        .call-btn:disabled {
+            background: #444444;
+            color: #888888;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .status-indicator.idle {
+            background: #888888;
+        }
+
+        .status-indicator.loading {
+            background: #ffaa00;
+            animation: pulse 1.5s infinite;
+        }
+
+        .status-indicator.success {
+            background: #00ff00;
+        }
+
+        .status-indicator.error {
+            background: #ff0000;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .endpoint-info {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 16px;
+            margin-bottom: 24px;
+            font-size: 14px;
+        }
+
+        .endpoint-info code {
+            color: #00ff00;
+            font-family: monospace;
         }
     </style>
 </head>
@@ -185,7 +349,7 @@
         <div class="hero">
             <h1 class="hero-title">DFlow MCP Server</h1>
             <p class="hero-subtitle">
-                Model Context Protocol server for Prediction Market Metadata API. Connect Claude Desktop to comprehensive prediction market data.
+                Model Context Protocol server for Prediction Market Metadata API. Connect Claude Desktop and other MCP clients to comprehensive prediction market data.
             </p>
             
             <div class="code-block">
@@ -219,18 +383,96 @@
             </div>
         </div>
 
-        <div class="resources">
-            <h3>Resources</h3>
-            <div class="resource-links">
-                <a href="https://github.com/openSVM/dflow-mcp" class="resource-link">
-                    GitHub
-                </a>
-                <a href="https://github.com/openSVM/dflow-mcp/blob/main/README.md" class="resource-link">
-                    Documentation
-                </a>
-                <a href="https://github.com/openSVM/dflow-mcp/blob/main/llms_dflow.json" class="resource-link">
-                    API Spec
-                </a>
+        <div class="playground">
+            <h2>🛠️ MCP API Playground</h2>
+            
+            <div class="endpoint-info">
+                <strong>API Endpoint:</strong> <code>https://dflow.opensvm.com/api/mcp</code>
+            </div>
+
+            <div class="tool-selector">
+                <button class="tool-btn active" onclick="selectTool('tools.list')">List Tools</button>
+                <button class="tool-btn" onclick="selectTool('get_events')">Get Events</button>
+                <button class="tool-btn" onclick="selectTool('get_markets')">Get Markets</button>
+                <button class="tool-btn" onclick="selectTool('get_trades')">Get Trades</button>
+            </div>
+
+            <div style="margin-bottom: 24px;">
+                <button class="btn-secondary" onclick="copyFile('llms.txt')">
+                    📄 Copy llms.txt
+                </button>
+                <button class="btn-secondary" onclick="copyFile('llms_dflow.json')">
+                    📄 Copy llms_dflow.json
+                </button>
+            </div>
+
+            <div id="tools.list" class="tool-params active">
+                <div class="param-group">
+                    <div class="param-item">
+                        <label>API Method</label>
+                        <input type="text" value="tools.list" readonly>
+                    </div>
+                </div>
+                <button class="call-btn" onclick="callAPI()">
+                    <span class="status-indicator idle" id="status"></span>
+                    Call API
+                </button>
+            </div>
+
+            <div id="get_events" class="tool-params">
+                <div class="param-group">
+                    <div class="param-item">
+                        <label>Limit (optional)</label>
+                        <input type="number" id="events_limit" placeholder="5" min="0">
+                    </div>
+                    <div class="param-item">
+                        <label>Cursor (optional)</label>
+                        <input type="number" id="events_cursor" placeholder="0" min="0">
+                    </div>
+                </div>
+                <button class="call-btn" onclick="callAPI()">
+                    <span class="status-indicator idle" id="status"></span>
+                    Get Events
+                </button>
+            </div>
+
+            <div id="get_markets" class="tool-params">
+                <div class="param-group">
+                    <div class="param-item">
+                        <label>Limit (optional)</label>
+                        <input type="number" id="markets_limit" placeholder="5" min="0">
+                    </div>
+                    <div class="param-item">
+                        <label>Cursor (optional)</label>
+                        <input type="number" id="markets_cursor" placeholder="0" min="0">
+                    </div>
+                </div>
+                <button class="call-btn" onclick="callAPI()">
+                    <span class="status-indicator idle" id="status"></span>
+                    Get Markets
+                </button>
+            </div>
+
+            <div id="get_trades" class="tool-params">
+                <div class="param-group">
+                    <div class="param-item">
+                        <label>Limit (optional)</label>
+                        <input type="number" id="trades_limit" placeholder="5" min="0">
+                    </div>
+                    <div class="param-item">
+                        <label>Cursor (optional)</label>
+                        <input type="text" id="trades_cursor" placeholder="">
+                    </div>
+                </div>
+                <button class="call-btn" onclick="callAPI()">
+                    <span class="status-indicator idle" id="status"></span>
+                    Get Trades
+                </button>
+            </div>
+
+            <div class="response-section">
+                <h3>Response</h3>
+                <div id="response" class="response-content"></div>
             </div>
         </div>
 
@@ -243,9 +485,157 @@
                 <span style="color: #888888;">DFlow MCP Server</span>
             </div>
             <div style="font-size: 12px; color: #666666;">
-                Built for SVM ecosystem
+                Built for the SVM ecosystem. © 2024 OpenSVM.
             </div>
         </div>
     </div>
+
+    <script>
+        let currentTool = 'tools.list';
+        let requestId = 1;
+
+        function selectTool(toolName) {
+            currentTool = toolName;
+            
+            // Update button states
+            document.querySelectorAll('.tool-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Show/hide parameter sections
+            document.querySelectorAll('.tool-params').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(toolName).classList.add('active');
+            
+            // Clear response
+            document.getElementById('response').classList.remove('active');
+            resetStatus();
+        }
+
+        function resetStatus() {
+            const indicator = document.getElementById('status');
+            indicator.className = 'status-indicator idle';
+        }
+
+        function setLoading() {
+            const indicator = document.getElementById('status');
+            indicator.className = 'status-indicator loading';
+        }
+
+        function setSuccess() {
+            const indicator = document.getElementById('status');
+            indicator.className = 'status-indicator success';
+        }
+
+        function setError() {
+            const indicator = document.getElementById('status');
+            indicator.className = 'status-indicator error';
+        }
+
+        async function callAPI() {
+            const responseDiv = document.getElementById('response');
+            const callButtons = document.querySelectorAll('.call-btn');
+            
+            // Disable buttons and show loading
+            callButtons.forEach(btn => btn.disabled = true);
+            setLoading();
+            
+            let requestData, url;
+            
+            if (currentTool === 'tools.list') {
+                requestData = {
+                    jsonrpc: "2.0",
+                    id: ++requestId,
+                    method: "tools.list",
+                    params: {}
+                };
+            } else {
+                const params = {};
+                
+                if (currentTool === 'get_events') {
+                    const limit = document.getElementById('events_limit').value;
+                    const cursor = document.getElementById('events_cursor').value;
+                    if (limit) params.limit = parseInt(limit);
+                    if (cursor) params.cursor = parseInt(cursor);
+                } else if (currentTool === 'get_markets') {
+                    const limit = document.getElementById('markets_limit').value;
+                    const cursor = document.getElementById('markets_cursor').value;
+                    if (limit) params.limit = parseInt(limit);
+                    if (cursor) params.cursor = parseInt(cursor);
+                } else if (currentTool === 'get_trades') {
+                    const limit = document.getElementById('trades_limit').value;
+                    const cursor = document.getElementById('trades_cursor').value;
+                    if (limit) params.limit = parseInt(limit);
+                    if (cursor) params.cursor = cursor;
+                }
+                
+                requestData = {
+                    jsonrpc: "2.0",
+                    id: ++requestId,
+                    method: "tools.call",
+                    params: {
+                        name: currentTool,
+                        arguments: params
+                    }
+                };
+            }
+            
+            url = 'https://dflow.opensvm.com/api/mcp';
+            
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(requestData)
+                });
+                
+                const result = await response.text();
+                
+                if (response.ok) {
+                    responseDiv.textContent = JSON.stringify(JSON.parse(result), null, 2);
+                    responseDiv.classList.remove('error');
+                    responseDiv.classList.add('active');
+                    setSuccess();
+                } else {
+                    throw new Error(`HTTP ${response.status}: ${result}`);
+                }
+                
+            } catch (error) {
+                responseDiv.textContent = `Error: ${error.message}`;
+                responseDiv.classList.add('error');
+                responseDiv.classList.add('active');
+                setError();
+            }
+            
+            // Re-enable buttons
+            callButtons.forEach(btn => btn.disabled = false);
+            
+            // Reset status after 2 seconds
+            setTimeout(() => {
+                resetStatus();
+            }, 2000);
+        }
+
+        // Auto-list tools on page load
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                callAPI();
+            }, 1000);
+        });
+
+        function copyFile(filename) {
+            const content = fetch(filename)
+                .then(response => response.text())
+                .then(text => {
+                    navigator.clipboard.writeText(text).then(() => {
+                        alert(`Copied ${filename} to clipboard!`);
+                    });
+                });
+        }
+    </script>
 </body>
 </html>
