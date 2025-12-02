@@ -3,113 +3,39 @@ command = "npm install"
 
 # Latest Netlify Functions configuration
 [functions]
-  directory = "functions"
+  directory = "netlify/functions"
   node_bundler = "esbuild"
   included_files = ["node_modules/**"]
 
-# Universal MCP Server Endpoints
-[[redirects]]
-  from = "/mcp/v2/bootstrap"
-  to = "/.netlify/functions/universal-mcp"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/sse"
-  to = "/.netlify/functions/universal-mcp"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/mcp"
-  to = "/.netlify/functions/universal-mcp"
-  status = 200
-  force = true
-
+# MCP Server Endpoints - All routes point to the mcp function
 [[redirects]]
   from = "/api/mcp"
-  to = "/.netlify/functions/standard-mcp"
-  status = 200
-  force = true
-
-# SSE Events Endpoints
-[[redirects]]
-  from = "/mcp/v2/events"
-  to = "/.netlify/functions/universal-mcp"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/mcp/events"
-  to = "/.netlify/functions/universal-mcp"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/api/mcp/events"
-  to = "/.netlify/functions/universal-mcp"
-  status = 200
-  force = true
-
-# Tools Endpoints
-[[redirects]]
-  from = "/mcp/v2/tools/list"
-  to = "/.netlify/functions/universal-mcp"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/sse/tools"
-  to = "/.netlify/functions/universal-mcp"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/mcp/tools"
-  to = "/.netlify/functions/universal-mcp"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/api/mcp/tools/list"
-  to = "/.netlify/functions/standard-mcp"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/mcp/v2/tools/call"
-  to = "/.netlify/functions/universal-mcp"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/sse/call"
-  to = "/.netlify/functions/universal-mcp"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/mcp/call"
-  to = "/.netlify/functions/universal-mcp"
-  status = 200
-  force = true
-
-[[redirects]]
-  from = "/api/mcp/tools/call"
-  to = "/.netlify/functions/standard-mcp"
-  status = 200
-  force = true
-
-# Wildcard fallbacks
-[[redirects]]
-  from = "/mcp/*"
-  to = "/.netlify/functions/universal-mcp"
+  to = "/.netlify/functions/mcp"
   status = 200
   force = true
 
 [[redirects]]
   from = "/api/mcp/*"
-  to = "/.netlify/functions/standard-mcp"
+  to = "/.netlify/functions/mcp"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/mcp"
+  to = "/.netlify/functions/mcp"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/mcp/*"
+  to = "/.netlify/functions/mcp"
+  status = 200
+  force = true
+
+# Health check endpoint
+[[redirects]]
+  from = "/health"
+  to = "/.netlify/functions/health"
   status = 200
   force = true
 
@@ -119,28 +45,6 @@ command = "npm install"
   [headers.values]
     Access-Control-Allow-Origin = "*"
     Access-Control-Allow-Methods = "GET, POST, OPTIONS"
-    Access-Control-Allow-Headers = "Content-Type, Authorization, x-api-key, Last-Event-ID"
+    Access-Control-Allow-Headers = "Content-Type, Authorization"
     X-Frame-Options = "DENY"
     X-Content-Type-Options = "nosniff"
-
-# Headers for SSE endpoints
-[[headers]]
-  for = "/sse/*"
-  [headers.values]
-    Cache-Control = "no-cache, no-store, must-revalidate"
-    Pragma = "no-cache"
-    Expires = "0"
-
-[[headers]]
-  for = "/mcp/events"
-  [headers.values]
-    Cache-Control = "no-cache, no-store, must-revalidate"
-    Pragma = "no-cache"
-    Expires = "0"
-
-[[headers]]
-  for = "/api/mcp/events"
-  [headers.values]
-    Cache-Control = "no-cache, no-store, must-revalidate"
-    Pragma = "no-cache"
-    Expires = "0"
