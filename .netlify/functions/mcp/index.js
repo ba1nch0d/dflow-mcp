@@ -128,7 +128,9 @@ const SERVER_INFO = {
   capabilities: {
     tools: {
       listChanged: false
-    }
+    },
+    prompts: {},
+    resources: {}
   },
   serverInfo: {
     name: 'dflow-mcp-server',
@@ -184,6 +186,30 @@ exports.handler = async function(event, context) {
       'Content-Type': 'application/json',
       'Cache-Control': 'no-cache'
     };
+
+    // Handle connectMCPServer request (Claude connection method)
+    if (request.method === 'connectMCPServer') {
+      return {
+        statusCode: 200,
+        headers: responseHeaders,
+        body: JSON.stringify({
+          jsonrpc: "2.0",
+          id: request.id,
+          result: {
+            name: SERVER_INFO.serverInfo.name,
+            version: SERVER_INFO.serverInfo.version,
+            description: SERVER_INFO.serverInfo.description,
+            capabilities: SERVER_INFO.capabilities,
+            tools: TOOLS.map(tool => ({
+              name: tool.name,
+              description: tool.description,
+              inputSchema: tool.inputSchema
+            })),
+            connected: true
+          }
+        })
+      };
+    }
 
     // Handle initialize request (MCP spec)
     if (request.method === 'initialize') {
@@ -281,6 +307,37 @@ exports.handler = async function(event, context) {
       }
     }
 
+    // Handle tools/describe request (optional MCP spec)
+    if (request.method === 'tools/describe') {
+      const toolName = request.params.name;
+      const tool = TOOLS.find(t => t.name === toolName);
+      
+      if (!tool) {
+        return {
+          statusCode: 200,
+          headers: responseHeaders,
+          body: JSON.stringify({
+            jsonrpc: "2.0",
+            id: request.id,
+            error: {
+              code: -32602,
+              message: `Tool not found: ${toolName}`
+            }
+          })
+        };
+      }
+
+      return {
+        statusCode: 200,
+        headers: responseHeaders,
+        body: JSON.stringify({
+          jsonrpc: "2.0",
+          id: request.id,
+          result: tool
+        })
+      };
+    }
+
     // Handle server info request
     if (request.method === 'server/info') {
       return {
@@ -306,9 +363,11 @@ exports.handler = async function(event, context) {
           message: 'Method not found',
           data: {
             available_methods: [
+              'connectMCPServer',
               'initialize',
               'tools/list',
               'tools/call',
+              'tools/describe',
               'server/info'
             ]
           }
