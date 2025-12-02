@@ -17,10 +17,22 @@ This MCP server provides access to the complete Prediction Market Metadata API i
 
 ## Installation
 
-### Prerequisites
+### Method 1: Install via Smithery (Recommended)
+
+The easiest way to install this MCP server is through [Smithery](https://smithery.ai):
+
+```bash
+npx @smithery/cli install dflow-mcp-server --client claude
+```
+
+This will automatically configure the server for use with Claude Desktop.
+
+### Method 2: Manual Installation
+
+#### Prerequisites
 - [Bun](https://bun.sh/) (recommended) or Node.js 18+
 
-### Install Dependencies
+#### Install Dependencies
 ```bash
 bun install
 ```
@@ -44,7 +56,9 @@ The server uses stdio transport for MCP communication, which is the standard for
 
 ### Integration with MCP Clients
 
-Add this server to your MCP client configuration (e.g., Claude Desktop, Cursor):
+#### Claude Desktop
+
+If you installed via Smithery, the configuration is automatic. For manual setup, add this to your Claude Desktop config:
 
 ```json
 {
@@ -56,6 +70,10 @@ Add this server to your MCP client configuration (e.g., Claude Desktop, Cursor):
   }
 }
 ```
+
+#### Other MCP Clients
+
+This server is compatible with any MCP client (Cursor, Continue, etc.). Use the same configuration format as above.
 
 ## Available Tools
 
@@ -179,6 +197,27 @@ https://prediction-markets-api.dflow.net
 ```
 
 All tools include comprehensive parameter validation and type definitions. Error handling returns informative messages for debugging.
+
+## Publishing to Smithery
+
+This server is configured for publication on [Smithery](https://smithery.ai), the MCP server registry.
+
+### Configuration Files
+
+- `smithery.yaml` - Defines the runtime (TypeScript) and target (local)
+- `package.json` - Includes module entry point and Smithery CLI scripts
+
+### To Publish
+
+1. Ensure your code is pushed to a public GitHub repository
+2. Visit [smithery.ai/new](https://smithery.ai/new)
+3. Connect your GitHub repository
+4. Smithery will automatically detect the `smithery.yaml` configuration
+
+Once published, users can install your server with:
+```bash
+npx @smithery/cli install dflow-mcp-server --client claude
+```
 
 ## License
 

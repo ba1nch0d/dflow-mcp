@@ -874,6 +874,40 @@
                         <div class="metadata-label">Avg Volume</div>
                     </div>
                 `;
+            } else if (data.markets) {
+                const totalLiq = data.markets.reduce((sum, m) => sum + (m.liquidity || 0), 0);
+                const totalVol = data.markets.reduce((sum, m) => sum + (m.volume || 0), 0);
+                html += `
+                    <div class="metadata-item">
+                        <div class="metadata-value">${data.markets.length}</div>
+                        <div class="metadata-label">Markets</div>
+                    </div>
+                    <div class="metadata-item">
+                        <div class="metadata-value">$${(totalLiq / 1000000).toFixed(1)}M</div>
+                        <div class="metadata-label">Total Liquidity</div>
+                    </div>
+                    <div class="metadata-item">
+                        <div class="metadata-value">$${(totalVol / 1000000).toFixed(1)}M</div>
+                        <div class="metadata-label">Total Volume</div>
+                    </div>
+                `;
+            } else if (data.trades) {
+                const totalVol = data.trades.reduce((sum, t) => sum + (parseFloat(t.amount || t.size || 0)), 0);
+                const avgVol = totalVol / data.trades.length;
+                html += `
+                    <div class="metadata-item">
+                        <div class="metadata-value">${data.trades.length}</div>
+                        <div class="metadata-label">Trades</div>
+                    </div>
+                    <div class="metadata-item">
+                        <div class="metadata-value">$${(totalVol / 1000).toFixed(1)}K</div>
+                        <div class="metadata-label">Total Volume</div>
+                    </div>
+                    <div class="metadata-item">
+                        <div class="metadata-value">$${avgVol.toFixed(2)}</div>
+                        <div class="metadata-label">Avg Trade Size</div>
+                    </div>
+                `;
             } else if (data.tools) {
                 html += `
                     <div class="metadata-item">
@@ -889,21 +923,54 @@
         }
 
         function showCharts(data, container) {
-            if (!data.events || data.events.length === 0) return;
+            let html = '';
 
-            const top10 = data.events.slice(0, 10);
-            const maxVolume = Math.max(...top10.map(e => e.volume || 0));
+            if (data.events && data.events.length > 0) {
+                const top10 = data.events.slice(0, 10);
+                const maxVolume = Math.max(...top10.map(e => e.volume || 0));
 
-            let html = '<h4 style="margin: 0 0 12px 0">📈 Top Events by Volume</h4>';
-            top10.forEach(event => {
-                const width = (event.volume / maxVolume * 100);
-                html += `
-                    <div class="chart-bar" style="width: ${width}%">
-                        <div class="chart-label">${event.title.substring(0, 40)}...</div>
-                        <div class="chart-value">$${(event.volume / 1000000).toFixed(2)}M</div>
-                    </div>
-                `;
-            });
+                html = '<h4 style="margin: 0 0 12px 0">📈 Top Events by Volume</h4>';
+                top10.forEach(event => {
+                    const width = (event.volume / maxVolume * 100);
+                    html += `
+                        <div class="chart-bar" style="width: ${width}%">
+                            <div class="chart-label">${event.title.substring(0, 40)}...</div>
+                            <div class="chart-value">$${(event.volume / 1000000).toFixed(2)}M</div>
+                        </div>
+                    `;
+                });
+            } else if (data.markets && data.markets.length > 0) {
+                const top10 = data.markets.slice(0, 10);
+                const maxLiq = Math.max(...top10.map(m => m.liquidity || 0));
+
+                html = '<h4 style="margin: 0 0 12px 0">📈 Top Markets by Liquidity</h4>';
+                top10.forEach(market => {
+                    const width = (market.liquidity / maxLiq * 100);
+                    html += `
+                        <div class="chart-bar" style="width: ${width}%">
+                            <div class="chart-label">${(market.title || market.ticker || 'Market').substring(0, 40)}</div>
+                            <div class="chart-value">$${(market.liquidity / 1000000).toFixed(2)}M</div>
+                        </div>
+                    `;
+                });
+            } else if (data.trades && data.trades.length > 0) {
+                const top10 = data.trades.slice(0, 10);
+                const maxSize = Math.max(...top10.map(t => parseFloat(t.amount || t.size || 0)));
+
+                html = '<h4 style="margin: 0 0 12px 0">📈 Top Trades by Size</h4>';
+                top10.forEach(trade => {
+                    const size = parseFloat(trade.amount || trade.size || 0);
+                    const width = (size / maxSize * 100);
+                    html += `
+                        <div class="chart-bar" style="width: ${width}%">
+                            <div class="chart-label">${trade.ticker || trade.market || 'Trade'}</div>
+                            <div class="chart-value">$${size.toFixed(2)}</div>
+                        </div>
+                    `;
+                });
+            } else {
+                return; // No data to visualize
+            }
 
             container.innerHTML = html;
             container.classList.add('active');
