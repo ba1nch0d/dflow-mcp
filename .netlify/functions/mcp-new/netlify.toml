@@ -1,0 +1,11 @@
+[build]
+command = "npm install"
+
+[[redirects]]
+from = "/api/mcp"
+to = "/.netlify/functions/mcp-new"
+status = 301
+
+[functions]]
+directory = "functions"
+node_bundler = "esbuild"
