@@ -1,4 +1,7 @@
+```markdown
 # DFlow MCP Server
+
+[![smithery badge](https://smithery.ai/badge/@openSVM/dflow-mcp)](https://smithery.ai/server/@openSVM/dflow-mcp)
 
 A Model Context Protocol (MCP) server for the Prediction Market Metadata API defined in `llms_dflow.json`.
 
@@ -13,7 +16,7 @@ This MCP server provides access to the complete Prediction Market Metadata API i
 - **Candlestick Data**: OHLC data for events and markets
 - **Live Data**: Real-time data feeds, milestone information
 - **Series Information**: Series templates, categories, and metadata
-- **Utility Functions**: Outcome mint queries, filtering, and search capabilities
+- **Utility Functions**: Outcome mint queries, filtering, and search capability
 
 ## Installation
 
@@ -222,3 +225,4 @@ npx @smithery/cli install dflow-mcp-server --client claude
 ## License
 
 See LICENSE file for details.
+```
