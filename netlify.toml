@@ -5,52 +5,50 @@ command = "npm install"
   directory = "netlify/functions"
   node_bundler = "esbuild"
 
-# Simple working MCP API
+# Use the known working mcp.js function
 [[redirects]]
   from = "/api/mcp"
-  to = "/.netlify/functions/mcp-api"
+  to = "/.netlify/functions/mcp"
   status = 200
   force = true
 
 [[redirects]]
   from = "/api/mcp/*"
-  to = "/.netlify/functions/mcp-api"
+  to = "/.netlify/functions/mcp"
   status = 200
   force = true
 
-# Universal endpoints
 [[redirects]]
   from = "/mcp"
-  to = "/.netlify/functions/mcp-api"
+  to = "/.netlify/functions/mcp"
   status = 200
   force = true
 
 [[redirects]]
   from = "/mcp/*"
-  to = "/.netlify/functions/mcp-api"
+  to = "/.netlify/functions/mcp"
   status = 200
   force = true
 
 [[redirects]]
   from = "/mcp/v2/bootstrap"
-  to = "/.netlify/functions/mcp-api"
+  to = "/.netlify/functions/mcp"
   status = 200
   force = true
 
 [[redirects]]
   from = "/sse"
-  to = "/.netlify/functions/mcp-api"
+  to = "/.netlify/functions/mcp"
   status = 200
   force = true
 
-# Health check
 [[redirects]]
   from = "/health"
-  to = "/.netlify/functions/mcp-api"
+  to = "/.netlify/functions/mcp"
   status = 200
   force = true
 
-# Headers
+# Headers for CORS
 [[headers]]
   for = "/*"
   [headers.values]
