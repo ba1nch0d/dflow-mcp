@@ -471,6 +471,14 @@
             </div>
 
             <div class="response-section">
+                <h3>cURL Command</h3>
+                <div id="curl-command" class="response-content" style="display: block; background: rgba(100, 255, 100, 0.05); border-color: rgba(100, 255, 100, 0.2);"></div>
+                <button class="btn-secondary" onclick="copyCurl()" style="margin-top: 12px; display: none;" id="copy-curl-btn">
+                    📋 Copy cURL Command
+                </button>
+            </div>
+
+            <div class="response-section">
                 <h3>Response</h3>
                 <div id="response" class="response-content"></div>
             </div>
@@ -534,16 +542,39 @@
             indicator.className = 'status-indicator error';
         }
 
+        let currentCurlCommand = '';
+
+        function generateCurlCommand(url, requestData) {
+            const jsonData = JSON.stringify(requestData, null, 2);
+            const escapedData = jsonData.replace(/'/g, "'\\''");
+            return `curl -X POST '${url}' \\
+  -H 'Content-Type: application/json' \\
+  -d '${escapedData}'`;
+        }
+
+        function copyCurl() {
+            navigator.clipboard.writeText(currentCurlCommand).then(() => {
+                const btn = document.getElementById('copy-curl-btn');
+                const originalText = btn.textContent;
+                btn.textContent = '✅ Copied!';
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                }, 2000);
+            });
+        }
+
         async function callAPI() {
             const responseDiv = document.getElementById('response');
+            const curlDiv = document.getElementById('curl-command');
+            const copyCurlBtn = document.getElementById('copy-curl-btn');
             const callButtons = document.querySelectorAll('.call-btn');
-            
+
             // Disable buttons and show loading
             callButtons.forEach(btn => btn.disabled = true);
             setLoading();
-            
+
             let requestData, url;
-            
+
             if (currentTool === 'tools.list') {
                 requestData = {
                     jsonrpc: "2.0",
@@ -553,7 +584,7 @@
                 };
             } else {
                 const params = {};
-                
+
                 if (currentTool === 'get_events') {
                     const limit = document.getElementById('events_limit').value;
                     const cursor = document.getElementById('events_cursor').value;
@@ -570,7 +601,7 @@
                     if (limit) params.limit = parseInt(limit);
                     if (cursor) params.cursor = cursor;
                 }
-                
+
                 requestData = {
                     jsonrpc: "2.0",
                     id: ++requestId,
@@ -581,8 +612,14 @@
                     }
                 };
             }
-            
+
             url = 'https://dflow.opensvm.com/api/mcp';
+
+            // Generate and display curl command
+            currentCurlCommand = generateCurlCommand(url, requestData);
+            curlDiv.textContent = currentCurlCommand;
+            curlDiv.style.display = 'block';
+            copyCurlBtn.style.display = 'inline-block';
             
             try {
                 const response = await fetch(url, {
@@ -605,7 +642,20 @@
                 }
                 
             } catch (error) {
-                responseDiv.textContent = `Error: ${error.message}`;
+                const errorData = await response.json().catch(() => null);
+                let errorMessage = `Error: ${error.message}`;
+
+                if (errorData && errorData.error) {
+                    errorMessage += `\n\nMCP Error ${errorData.error.code}: ${errorData.error.message}`;
+
+                    if (errorData.error.message.includes('fetch failed')) {
+                        errorMessage += '\n\nNote: The external API (api.llm.dflow.org) may be temporarily unavailable.';
+                        errorMessage += '\nThe MCP server itself is working correctly.';
+                        errorMessage += '\nYou can test with "List Tools" which doesn\'t require external API access.';
+                    }
+                }
+
+                responseDiv.textContent = errorMessage;
                 responseDiv.classList.add('error');
                 responseDiv.classList.add('active');
                 setError();
